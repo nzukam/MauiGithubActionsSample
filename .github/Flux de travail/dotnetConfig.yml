@@ -1,0 +1,37 @@
+
+nom: Build .NET MAUI App Android CI/CD
+
+sur:
+  Poussez :
+    branches:[ « main » ]
+  pull_request :
+    branches:[ « main » ]
+
+Emplois:
+  Construire:
+
+    runs-on: windows-latest
+
+    Steps :
+    - uses: actions/checkout@v3
+    - name: Fichier de stockage de clés d’installation
+      run: |
+        echo '${{MAGASIN_DE_CLES }} ' > myapp.keystore.asc
+        gpg -d --passphrase ' ${{ MAGASIN_DE_CLES}} ' --batch myapp.keystore.asc > myapp.keystore
+    - nom:Setup .NET
+    - uses: actions/configuration-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Installer .NET MAUI
+      run: DotNet Workload installer Maui
+    - name: Restaurer les dépendances
+      run: restauration dotnet
+    - name: Build
+      run: dotnet build MauiGithubActionsSample/MauiGithubActionsSample.csproj -c Release -f net6.0-android /p:AndroidSigningKeyStore=myapp.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets. KEYSTORE_PASSWORD }} » /p:AndroidSigningStorePass="${{ secrets. KEYSTORE_PASSWORD_ALIAS }} » --no-restore
+ 
+    - name: Télécharger un artefact de build
+      uses: actions/upload-artifact@v3.1.0
+      with :
+        chemin:|
+          ./**/*.aab
+./**/*..apk
