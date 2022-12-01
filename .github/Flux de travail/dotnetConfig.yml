@@ -16,8 +16,8 @@ Emplois:
     - uses: actions/checkout@v3
     - name: Fichier de stockage de clés d’installation
       run: |
-        echo '${{MAGASIN_DE_CLES }} ' > myapp.keystore.asc
-        gpg -d --passphrase ' ${{ MAGASIN_DE_CLES}} ' --batch myapp.keystore.asc > myapp.keystore
+        echo '${{secret. MAGASIN_DE_CLES }} ' > myapp.keystore.asc
+        gpg -d --passphrase ' ${{ secret. MAGASIN_DE_CLES}} ' --batch myapp.keystore.asc > myapp.keystore
     - nom:Setup .NET
     - uses: actions/configuration-dotnet@v2
       with:
